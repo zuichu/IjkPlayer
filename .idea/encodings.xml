@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/AbstractMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/AndroidMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/ISurfaceTextureHolder.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/ISurfaceTextureHost.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkLibLoader.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkMediaCodecInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkMediaMeta.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkMediaMeta.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/IjkTimedText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/MediaInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/MediaPlayerProxy.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/TextureMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/AbstractMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/AndroidMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/ISurfaceTextureHolder.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/ISurfaceTextureHost.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkLibLoader.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkMediaCodecInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkMediaMeta.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkMediaMeta.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkTimedText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/IjkTimedText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/MediaInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/MediaPlayerProxy.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/TextureMediaPlayer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/AndroidMediaFormat.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/AndroidTrackInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/IIjkIOHttp.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/IMediaDataSource.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/IMediaFormat.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/ITrackInfo.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/IjkMediaFormat.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ijk/src/main/java/tv/danmaku/ijk/media/player/misc/IjkTrackInfo.java" charset="GBK" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
