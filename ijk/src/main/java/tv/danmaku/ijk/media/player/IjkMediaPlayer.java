@@ -54,7 +54,7 @@ import java.util.Map;
 
 import tv.danmaku.ijk.media.player.annotations.AccessedByNative;
 import tv.danmaku.ijk.media.player.annotations.CalledByNative;
-import tv.danmaku.ijk.media.player.misc.IIjkIOHttp;
+import tv.danmaku.ijk.media.player.misc.IAndroidIO;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 import tv.danmaku.ijk.media.player.misc.IjkTrackInfo;
@@ -144,7 +144,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     private long mNativeMediaDataSource;
 
     @AccessedByNative
-    private long mNativeIjkIOHttp;
+    private long mNativeAndroidIO;
 
     @AccessedByNative
     private int mNativeSurfaceTexture;
@@ -185,6 +185,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
                 libLoader.loadLibrary("ijkffmpeg");
                 libLoader.loadLibrary("ijksdl");
+                libLoader.loadLibrary("ijksoundtouch");
                 libLoader.loadLibrary("ijkplayer");
                 mIsLibLoaded = true;
             }
@@ -481,9 +482,9 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
         _setDataSource(mediaDataSource);
     }
 
-    public void setDataSourceIjkIOHttp(IIjkIOHttp ijkIOHttp)
+    public void setAndroidIOCallback(IAndroidIO androidIO)
             throws IllegalArgumentException, SecurityException, IllegalStateException {
-        _setDataSourceIjkIOHttp(ijkIOHttp);
+        _setAndroidIOCallback(androidIO);
     }
 
     private native void _setDataSource(String path, String[] keys, String[] values)
@@ -495,7 +496,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     private native void _setDataSource(IMediaDataSource mediaDataSource)
             throws IllegalArgumentException, SecurityException, IllegalStateException;
 
-    private native void _setDataSourceIjkIOHttp(IIjkIOHttp ijkIOHttp)
+    private native void _setAndroidIOCallback(IAndroidIO androidIO)
             throws IllegalArgumentException, SecurityException, IllegalStateException;
 
     @Override
@@ -953,82 +954,82 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
             }
 
             switch (msg.what) {
-            case MEDIA_PREPARED:
-                player.notifyOnPrepared();
-                return;
+                case MEDIA_PREPARED:
+                    player.notifyOnPrepared();
+                    return;
 
-            case MEDIA_PLAYBACK_COMPLETE:
-                player.stayAwake(false);
-                player.notifyOnCompletion();
-                return;
-
-            case MEDIA_BUFFERING_UPDATE:
-                long bufferPosition = msg.arg1;
-                if (bufferPosition < 0) {
-                    bufferPosition = 0;
-                }
-
-                long percent = 0;
-                long duration = player.getDuration();
-                if (duration > 0) {
-                    percent = bufferPosition * 100 / duration;
-                }
-                if (percent >= 100) {
-                    percent = 100;
-                }
-
-                // DebugLog.efmt(TAG, "Buffer (%d%%) %d/%d",  percent, bufferPosition, duration);
-                player.notifyOnBufferingUpdate((int)percent);
-                return;
-
-            case MEDIA_SEEK_COMPLETE:
-                player.notifyOnSeekComplete();
-                return;
-
-            case MEDIA_SET_VIDEO_SIZE:
-                player.mVideoWidth = msg.arg1;
-                player.mVideoHeight = msg.arg2;
-                player.notifyOnVideoSizeChanged(player.mVideoWidth, player.mVideoHeight,
-                        player.mVideoSarNum, player.mVideoSarDen);
-                return;
-
-            case MEDIA_ERROR:
-                DebugLog.e(TAG, "Error (" + msg.arg1 + "," + msg.arg2 + ")");
-                if (!player.notifyOnError(msg.arg1, msg.arg2)) {
+                case MEDIA_PLAYBACK_COMPLETE:
+                    player.stayAwake(false);
                     player.notifyOnCompletion();
-                }
-                player.stayAwake(false);
-                return;
+                    return;
 
-            case MEDIA_INFO:
-                switch (msg.arg1) {
-                    case MEDIA_INFO_VIDEO_RENDERING_START:
-                        DebugLog.i(TAG, "Info: MEDIA_INFO_VIDEO_RENDERING_START\n");
-                        break;
-                }
-                player.notifyOnInfo(msg.arg1, msg.arg2);
-                // No real default action so far.
-                return;
-            case MEDIA_TIMED_TEXT:
-                if (msg.obj == null) {
-                    player.notifyOnTimedText(null);
-                } else {
-                    IjkTimedText text = new IjkTimedText(new Rect(0, 0, 1, 1), (String)msg.obj);
-                    player.notifyOnTimedText(text);
-                }
-                return;
-            case MEDIA_NOP: // interface test message - ignore
-                break;
+                case MEDIA_BUFFERING_UPDATE:
+                    long bufferPosition = msg.arg1;
+                    if (bufferPosition < 0) {
+                        bufferPosition = 0;
+                    }
 
-            case MEDIA_SET_VIDEO_SAR:
-                player.mVideoSarNum = msg.arg1;
-                player.mVideoSarDen = msg.arg2;
-                player.notifyOnVideoSizeChanged(player.mVideoWidth, player.mVideoHeight,
-                        player.mVideoSarNum, player.mVideoSarDen);
-                break;
+                    long percent = 0;
+                    long duration = player.getDuration();
+                    if (duration > 0) {
+                        percent = bufferPosition * 100 / duration;
+                    }
+                    if (percent >= 100) {
+                        percent = 100;
+                    }
 
-            default:
-                DebugLog.e(TAG, "Unknown message type " + msg.what);
+                    // DebugLog.efmt(TAG, "Buffer (%d%%) %d/%d",  percent, bufferPosition, duration);
+                    player.notifyOnBufferingUpdate((int)percent);
+                    return;
+
+                case MEDIA_SEEK_COMPLETE:
+                    player.notifyOnSeekComplete();
+                    return;
+
+                case MEDIA_SET_VIDEO_SIZE:
+                    player.mVideoWidth = msg.arg1;
+                    player.mVideoHeight = msg.arg2;
+                    player.notifyOnVideoSizeChanged(player.mVideoWidth, player.mVideoHeight,
+                            player.mVideoSarNum, player.mVideoSarDen);
+                    return;
+
+                case MEDIA_ERROR:
+                    DebugLog.e(TAG, "Error (" + msg.arg1 + "," + msg.arg2 + ")");
+                    if (!player.notifyOnError(msg.arg1, msg.arg2)) {
+                        player.notifyOnCompletion();
+                    }
+                    player.stayAwake(false);
+                    return;
+
+                case MEDIA_INFO:
+                    switch (msg.arg1) {
+                        case MEDIA_INFO_VIDEO_RENDERING_START:
+                            DebugLog.i(TAG, "Info: MEDIA_INFO_VIDEO_RENDERING_START\n");
+                            break;
+                    }
+                    player.notifyOnInfo(msg.arg1, msg.arg2);
+                    // No real default action so far.
+                    return;
+                case MEDIA_TIMED_TEXT:
+                    if (msg.obj == null) {
+                        player.notifyOnTimedText(null);
+                    } else {
+                        IjkTimedText text = new IjkTimedText(new Rect(0, 0, 1, 1), (String)msg.obj);
+                        player.notifyOnTimedText(text);
+                    }
+                    return;
+                case MEDIA_NOP: // interface test message - ignore
+                    break;
+
+                case MEDIA_SET_VIDEO_SAR:
+                    player.mVideoSarNum = msg.arg1;
+                    player.mVideoSarDen = msg.arg2;
+                    player.notifyOnVideoSizeChanged(player.mVideoWidth, player.mVideoHeight,
+                            player.mVideoSarNum, player.mVideoSarDen);
+                    break;
+
+                default:
+                    DebugLog.e(TAG, "Unknown message type " + msg.what);
             }
         }
     }
@@ -1042,7 +1043,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
      */
     @CalledByNative
     private static void postEventFromNative(Object weakThiz, int what,
-            int arg1, int arg2, Object obj) {
+                                            int arg1, int arg2, Object obj) {
         if (weakThiz == null)
             return;
 

@@ -52,7 +52,7 @@ public class VideoActivity extends BaseActivity implements TracksFragment.ITrack
     private static final String TAG = "VideoActivity";
 
     private String mVideoPath;
-    private Uri    mVideoUri;
+    private Uri mVideoUri;
 
     private AndroidMediaController mMediaController;
     private IjkVideoView mVideoView;
@@ -79,12 +79,9 @@ public class VideoActivity extends BaseActivity implements TracksFragment.ITrack
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
         mSettings = new Settings(this);
-
         // handle arguments
         mVideoPath = getIntent().getStringExtra("videoPath");
-
         Intent intent = getIntent();
         String intentAction = intent.getAction();
         if (!TextUtils.isEmpty(intentAction)) {
@@ -156,20 +153,21 @@ public class VideoActivity extends BaseActivity implements TracksFragment.ITrack
     @Override
     public void onBackPressed() {
         mBackPressed = true;
-
+        Log.i("info", "onBackPressed");
         super.onBackPressed();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
         if (mBackPressed || !mVideoView.isBackgroundPlayEnabled()) {
             mVideoView.stopPlayback();
             mVideoView.release(true);
             mVideoView.stopBackgroundPlay();
+            Log.i("info", "onStop isBackgroundPlayEnabled");
         } else {
             mVideoView.enterBackground();
+            Log.i("info", "onStop");
         }
         IjkMediaPlayer.native_profileEnd();
     }
