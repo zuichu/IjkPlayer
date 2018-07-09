@@ -108,6 +108,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     public static final int PROP_FLOAT_VIDEO_DECODE_FRAMES_PER_SECOND       = 10001;
     public static final int PROP_FLOAT_VIDEO_OUTPUT_FRAMES_PER_SECOND       = 10002;
     public static final int FFP_PROP_FLOAT_PLAYBACK_RATE                    = 10003;
+    public static final int FFP_PROP_FLOAT_DROP_FRAME_RATE                  = 10007;
 
     public static final int FFP_PROP_INT64_SELECTED_VIDEO_STREAM            = 20001;
     public static final int FFP_PROP_INT64_SELECTED_AUDIO_STREAM            = 20002;
@@ -130,12 +131,15 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     public static final int FFP_PROP_INT64_ASYNC_STATISTIC_BUF_CAPACITY     = 20203;
     public static final int FFP_PROP_INT64_TRAFFIC_STATISTIC_BYTE_COUNT     = 20204;
     public static final int FFP_PROP_INT64_CACHE_STATISTIC_PHYSICAL_POS     = 20205;
-    public static final int FFP_PROP_INT64_CACHE_STATISTIC_BUF_FORWARDS     = 20206;
+    public static final int FFP_PROP_INT64_CACHE_STATISTIC_FILE_FORWARDS    = 20206;
     public static final int FFP_PROP_INT64_CACHE_STATISTIC_FILE_POS         = 20207;
     public static final int FFP_PROP_INT64_CACHE_STATISTIC_COUNT_BYTES      = 20208;
+    public static final int FFP_PROP_INT64_LOGICAL_FILE_SIZE                = 20209;
+    public static final int FFP_PROP_INT64_SHARE_CACHE_DATA                 = 20210;
     public static final int FFP_PROP_INT64_BIT_RATE                         = 20100;
     public static final int FFP_PROP_INT64_TCP_SPEED                        = 20200;
     public static final int FFP_PROP_INT64_LATEST_SEEK_LOAD_DURATION        = 20300;
+    public static final int FFP_PROP_INT64_IMMEDIATE_RECONNECT              = 20211;
     //----------------------------------------
 
     @AccessedByNative
@@ -185,7 +189,6 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
                 libLoader.loadLibrary("ijkffmpeg");
                 libLoader.loadLibrary("ijksdl");
-                libLoader.loadLibrary("ijksoundtouch");
                 libLoader.loadLibrary("ijkplayer");
                 mIsLibLoaded = true;
             }
@@ -243,6 +246,9 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
          */
         native_setup(new WeakReference<IjkMediaPlayer>(this));
     }
+
+    private native void _setFrameAtTime(String imgCachePath, long startTime, long endTime, int num, int imgDefinition)
+            throws IllegalArgumentException, IllegalStateException;
 
     /*
      * Update the IjkMediaPlayer SurfaceTexture. Call after setting a new
@@ -804,8 +810,8 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
         return _getPropertyLong(FFP_PROP_INT64_CACHE_STATISTIC_PHYSICAL_POS, 0);
     }
 
-    public long getCacheStatisticBufForwards() {
-        return _getPropertyLong(FFP_PROP_INT64_CACHE_STATISTIC_BUF_FORWARDS, 0);
+    public long getCacheStatisticFileForwards() {
+        return _getPropertyLong(FFP_PROP_INT64_CACHE_STATISTIC_FILE_FORWARDS, 0);
     }
 
     public long getCacheStatisticFilePos() {
@@ -814,6 +820,10 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
     public long getCacheStatisticCountBytes() {
         return _getPropertyLong(FFP_PROP_INT64_CACHE_STATISTIC_COUNT_BYTES, 0);
+    }
+
+    public long getFileSize() {
+        return _getPropertyLong(FFP_PROP_INT64_LOGICAL_FILE_SIZE, 0);
     }
 
     public long getBitRate() {
@@ -832,6 +842,10 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     private native void  _setPropertyFloat(int property, float value);
     private native long  _getPropertyLong(int property, long defaultValue);
     private native void  _setPropertyLong(int property, long value);
+
+    public float getDropFrameRate() {
+        return _getPropertyFloat(FFP_PROP_FLOAT_DROP_FRAME_RATE, .0f);
+    }
 
     @Override
     public native void setVolume(float leftVolume, float rightVolume);
@@ -934,6 +948,14 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     protected void finalize() throws Throwable {
         super.finalize();
         native_finalize();
+    }
+
+    public void httphookReconnect() {
+        _setPropertyLong(FFP_PROP_INT64_IMMEDIATE_RECONNECT, 1);
+    }
+
+    public void setCacheShare(int share) {
+        _setPropertyLong(FFP_PROP_INT64_SHARE_CACHE_DATA, (long)share);
     }
 
     private static class EventHandler extends Handler {
@@ -1098,7 +1120,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
         int EVENT_WILL_HTTP_OPEN = 0x1;                 // ARG_URL
         int EVENT_DID_HTTP_OPEN = 0x2;                  // ARG_URL, ARG_ERROR, ARG_HTTP_CODE
         int EVENT_WILL_HTTP_SEEK = 0x3;                 // ARG_URL, ARG_OFFSET
-        int EVENT_DID_HTTP_SEEK = 0x4;                  // ARG_URL, ARG_OFFSET, ARG_ERROR, ARG_HTTP_CODE
+        int EVENT_DID_HTTP_SEEK = 0x4;                  // ARG_URL, ARG_OFFSET, ARG_ERROR, ARG_HTTP_CODE, ARG_FILE_SIZE
 
         String ARG_URL = "url";
         String ARG_SEGMENT_INDEX = "segment_index";
@@ -1112,6 +1134,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
         String ARG_OFFSET = "offset";
         String ARG_HTTP_CODE = "http_code";
+        String ARG_FILE_SIZE = "file_size";
 
         /*
          * @return true if invoke is handled

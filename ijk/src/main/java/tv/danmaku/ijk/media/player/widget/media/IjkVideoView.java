@@ -148,6 +148,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         initVideoView(context);
     }
 
+    public void setIjkMediaPlayer(IjkMediaPlayer ijkMediaPlayer) {
+        this.ijkMediaPlayer = ijkMediaPlayer;
+    }
 
     public void setOptions(Options options) {
         this.options = options;
@@ -183,7 +186,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
         initBackground();
         initRenders();
-
         mVideoWidth = 0;
         mVideoHeight = 0;
         // REMOVED: getHolder().addCallback(mSHCallback);
@@ -469,7 +471,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     start();
                 }
             }
-            Log.i("info","角度："+mVideoRotationDegree);
+            Log.i("info", "角度：" + mVideoRotationDegree);
         }
     };
 
@@ -955,7 +957,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             mAllRenders.add(RENDER_TEXTURE_VIEW);
         if (mSettings.getEnableNoView())
             mAllRenders.add(RENDER_NONE);
-
         if (mAllRenders.isEmpty())
             mAllRenders.add(RENDER_SURFACE_VIEW);
         mCurrentRender = mAllRenders.get(mCurrentRenderIndex);
